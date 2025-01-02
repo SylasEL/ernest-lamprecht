@@ -18,6 +18,8 @@ import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ParticleContainer from "./components/ParticleContainer";
+import { Theme } from './Theme';
+import ThemeToggle from './ThemeToggle';
 
 const App = () => {
 
@@ -40,19 +42,22 @@ const App = () => {
   });
 
   return (
-    <ReactLenis root>
-      <ParticleContainer />
-      <Header />
-      <main>
-        <Hero />
-        <About />
-        <Skill />
-        <Experience />
-        <Contact />
-        <Footer />
-      </main>
-    </ReactLenis>
-  )
+    <Theme>
+      <ReactLenis root>
+        <ParticleContainer />
+        <ThemeToggle />
+        <Header />
+        <main>
+          <Hero />
+          <About />
+          <Skill />
+          <Experience />
+          <Contact />
+          <Footer />
+        </main>
+      </ReactLenis>
+    </Theme>
+  );
 }
 
 export default App;
