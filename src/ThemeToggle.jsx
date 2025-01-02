@@ -11,7 +11,7 @@ const ThemeToggle = () => {
   const { isSpecialMode, setIsSpecialMode } = useTheme();
 
   return (
-    <div className="fixed top-5 lg:right-80 lg:pr-10 flex items-center gap-2 z-50">
+    <div className="fixed top-5 right-20 lg:right-80 lg:pr-10 flex items-center gap-2 z-50">
       <span className="text-zinc-400 text-sm">Normal</span>
       <motion.button
         onClick={() => setIsSpecialMode(!isSpecialMode)}
