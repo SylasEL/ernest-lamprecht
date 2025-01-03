@@ -3,9 +3,26 @@
  * @license Apache-2.0
  */
 import React from "react";
-
-// Get Primary Button
 import { ButtonPrimary, ButtonOutline } from "./Button";
+import { useTheme } from './../Theme';
+
+// Toggle text change -  Header
+const HeaderText = {
+	special: `Forge Scalable, Modern Projects for a Boundless Future`,
+	normal: `Design modern, scalable projects for limitless possibilities.`
+};
+
+// Toggle text change - Available
+const AvalableText = {
+	special: `Available for Quests`,
+	normal: `Available for Hire`,
+};
+
+// Toggle text change - Scroll button
+const ScrollText = {
+	special: `Venture Below`,
+	normal: `Scroll Down`,
+};
 
 /**
  * @description Hero component for the homepage
@@ -14,7 +31,8 @@ import { ButtonPrimary, ButtonOutline } from "./Button";
  * <Hero />
  */
 const Hero = () => {
-
+	const { isSpecialMode } = useTheme();
+	// Download CV
 	const handleDownloadCV = () => {
 		console.log("Download CV");
 		const path = "/images/ErnestLamprecht_CV.pdf";
@@ -49,13 +67,13 @@ const Hero = () => {
 							<span className="relative w-2 h-2 rounded-full bg-emerald-400">
 								<span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping"></span>
 							</span>
-							Available for Quests
+							{isSpecialMode ? AvalableText.special : AvalableText.normal}
 						</div>
 					</div>
 
 					<h2 className="headline-1 max-w-[15ch] 
                     sm:max-w-[20ch] lg:max-w-[15ch] mt-5 mb-8 lg:mb-10">
-						Forging Scalable, Modern Projects for a Boundless Future
+						{isSpecialMode ? HeaderText.special : HeaderText.normal}
 					</h2>
 
 					<div className="flex items-center gap-3">
@@ -67,7 +85,7 @@ const Hero = () => {
 
 						<ButtonOutline 
                             href="#about"
-                            label="Venture Below" 
+                            label={isSpecialMode ? ScrollText.special : ScrollText.normal} 
                             icon="arrow_downward"   
                         />
 					</div>

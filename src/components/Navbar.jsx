@@ -3,7 +3,7 @@
  * @license Apache-2.0
 */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 /**
@@ -28,6 +28,7 @@ import PropTypes from "prop-types";
 const Navbar = ( { navOpen }) => {
     const lastActiveLink = useRef();
     const activeBox = useRef();
+    const [activeSection, setActiveSection] = useState('home');
 
     /**
      * Initializes the active box by setting its position and dimensions
@@ -35,22 +36,44 @@ const Navbar = ( { navOpen }) => {
      * @returns {void}
      */
     const initActiveBox = () => {
-        // console.log(lastActiveLink.current)
-        // console.log(activeBox.current)
-
-        activeBox.current.style.top = lastActiveLink.current.
-        offsetTop + "px";
-        activeBox.current.style.left = lastActiveLink.current.
-        offsetLeft + "px";
-        activeBox.current.style.width = lastActiveLink.current.
-        offsetWidth + "px";
-        activeBox.current.style.height = lastActiveLink.current.
-        offsetHeight + "px";
+        if (!lastActiveLink.current) return;
+        activeBox.current.style.top = lastActiveLink.current.offsetTop + "px";
+        activeBox.current.style.left = lastActiveLink.current.offsetLeft + "px";
+        activeBox.current.style.width = lastActiveLink.current.offsetWidth + "px";
+        activeBox.current.style.height = lastActiveLink.current.offsetHeight + "px";
     }
 
-    useEffect(initActiveBox, []);
-    // Making sure that the menu updates as the window size change
-    window.addEventListener("resize", initActiveBox);
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = ['home', 'about', 'skills', 'exp', 'contact'];
+            const currentSection = sections.find(section => {
+                const element = document.getElementById(section);
+                if (!element) return false;
+                const rect = element.getBoundingClientRect();
+                return rect.top <= 100 && rect.bottom >= 100;
+            });
+            
+            if (currentSection) {
+                setActiveSection(currentSection);
+                const link = document.querySelector(`[href="#${currentSection}"]`);
+                if (link && link !== lastActiveLink.current) {
+                    lastActiveLink.current?.classList.remove("active");
+                    link.classList.add("active");
+                    lastActiveLink.current = link;
+                    initActiveBox();
+                }
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("resize", initActiveBox);
+        initActiveBox();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", initActiveBox);
+        };
+    }, []);
     
     /**
      * Sets the currently active link and updates the active box.
@@ -61,15 +84,14 @@ const Navbar = ( { navOpen }) => {
         lastActiveLink.current?.classList.remove("active");
         event.target.classList.add("active");
         lastActiveLink.current = event.target;
-
-        activeBox.current.style.top = event.target.
-        offsetTop + "px";
-        activeBox.current.style.left = event.target.
-        offsetLeft + "px";
-        activeBox.current.style.width = event.target.
-        offsetWidth + "px";
-        activeBox.current.style.height = event.target.
-        offsetHeight + "px";
+        initActiveBox();
+        
+        const sectionId = event.target.getAttribute('href').substring(1);
+        const section = document.getElementById(sectionId);
+        if (section) {
+            event.preventDefault();
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
     // Nav items
@@ -86,15 +108,15 @@ const Navbar = ( { navOpen }) => {
           className: 'nav-link'
         },
         {
+            label: 'Skills',
+            link: '#skills',
+            className: 'nav-link'
+          },
+        {
           label: 'Experience',
           link: '#exp',
           className: 'nav-link'
         },
-        // {
-        //   label: 'Reviews',
-        //   link: '#reviews',
-        //   className: 'nav-link'
-        // },
         {
           label: 'Contact',
           link: '#contact',

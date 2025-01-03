@@ -21,7 +21,6 @@ const Header = () => {
             <div className="max-w-screen-2xl w-full mx-auto px-4 flex justify-between items-center md:px-6 md:frid md:grid-cols-[1fr,3fr,1fr]">
                 <h1 className="text-2xl font-bold">
                     <a href="/" className="logo">
-                        {/* TODO: Replace logo with your fantasy-themed emblem */}
                         <img
                             src="/images/logo-4.svg"
                             width={40}
